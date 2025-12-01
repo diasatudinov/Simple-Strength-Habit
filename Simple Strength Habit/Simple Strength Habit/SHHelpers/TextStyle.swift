@@ -1,8 +1,8 @@
 //
 //  TextStyle.swift
-//  Coin strike car
+//  Simple Strength Habit
 //
-//
+
 
 
 import SwiftUI

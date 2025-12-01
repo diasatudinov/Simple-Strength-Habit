@@ -1,16 +1,8 @@
 //
-//  File.swift
+//  Date + ext.swift
 //  Simple Strength Habit
 //
-//  Created by Dias Atudinov on 01.12.2025.
-//
 
-
-//
-//  Date + ext.swift
-//  Coin strike car
-//
-//
 
 import SwiftUI
 
