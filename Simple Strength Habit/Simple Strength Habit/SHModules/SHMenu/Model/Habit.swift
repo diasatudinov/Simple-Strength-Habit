@@ -199,3 +199,9 @@ enum HabitType: Codable, Hashable, CaseIterable {
         }
     }
 }
+
+extension Decimal {
+    var doubleValue: Double {
+        NSDecimalNumber(decimal: self).doubleValue
+    }
+}

@@ -8,19 +8,13 @@ import SwiftUI
 
 class HabitViewModel: ObservableObject {
     @Published var habits: [Habit] = [
-        Habit(name: .waterIntake, goal: 2.5, progress: 0, type: .quantitative),
-        Habit(name: .flexibility, goal: 20, progress: 0, type: .quantitative),
-        Habit(name: .pushUps, goal: 50, progress: 0, type: .quantitative),
-        Habit(name: .running, goal: 30, progress: 0, type: .quantitative),
-        Habit(name: .walking, goal: 45, progress: 0, type: .quantitative),
-        Habit(name: .sleep, goal: 7, progress: 0, type: .quantitative),
-        Habit(name: .healthRecording, goal: 10, progress: 0, type: .quantitative),
+        
     ]
-//    {
-//        didSet {
-//            saveHabits()
-//        }
-//    }
+    {
+        didSet {
+            saveHabits()
+        }
+    }
     
     private var myCarsfileURL: URL {
         let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -29,7 +23,7 @@ class HabitViewModel: ObservableObject {
     
     // MARK: – Init
     init() {
-      //  loadHabits()
+        loadHabits()
     }
     
     // MARK: – Save / Load MY CARS
@@ -70,5 +64,32 @@ class HabitViewModel: ObservableObject {
     func delete(habit: Habit) {
         guard let index = habits.firstIndex(of: habit) else { return }
         habits.remove(at: index)
+    }
+    
+    func edit(habit: Habit, habitName: HabitName, habitGoal: Decimal, habitType: HabitType) {
+        guard let index = habits.firstIndex(of: habit) else { return }
+        habits[index].name = habitName
+        habits[index].goal = habitGoal
+        habits[index].type = habitType
+    }
+    
+    func toggleHabitComplete(habit: Habit) {
+        guard let index = habits.firstIndex(of: habit) else { return }
+        habits[index].isCompleted.toggle()
+        
+        if habits[index].isCompleted {
+            habits[index].progress = habits[index].goal
+        }
+    }
+    
+    func editProgress(habit: Habit, progress: Decimal) {
+        guard let index = habits.firstIndex(of: habit) else { return }
+        habits[index].progress = progress
+        
+        if habits[index].progress == habits[index].goal {
+            habits[index].isCompleted = true
+        } else {
+            habits[index].isCompleted = false
+        }
     }
 }

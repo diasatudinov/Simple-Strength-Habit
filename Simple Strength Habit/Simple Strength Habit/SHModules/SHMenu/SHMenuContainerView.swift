@@ -29,7 +29,7 @@ struct BBMenuView: View {
             case 0:
                 SHAllHabitsView(viewModel: habitViewModel)
             case 1:
-                Color.yellow.ignoresSafeArea()
+                SHHomeView(viewModel: habitViewModel)
             case 2:
                 Color.blue.ignoresSafeArea()
             case 3:
