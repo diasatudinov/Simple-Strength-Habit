@@ -2,17 +2,75 @@
 //  SHHomeView.swift
 //  Simple Strength Habit
 //
-//  Created by Dias Atudinov on 03.12.2025.
 //
 
 import SwiftUI
 
 struct SHHomeView: View {
+    @ObservedObject var viewModel: HabitViewModel
+    @State private var editProgress = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            VStack(alignment: .leading, spacing: 17) {
+                Text("Menu")
+                    .font(.system(size: 25, weight: .black))
+                    .foregroundStyle(.text)
+                    .textCase(.uppercase)
+                
+                AverageHabitProgressDonut(habits: viewModel.habits)
+                    .frame(maxWidth: .infinity)
+                
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 21) {
+                        ForEach(viewModel.habits, id: \.self) { habit in
+                            if habit.type == .quantitative {
+                                SHHomeHabitCellView(viewModel: viewModel, habit: habit)
+                            } else {
+                                HStack {
+                                    Text(habit.name.text)
+                                        .font(.system(size: 23, weight: .semibold))
+                                        .foregroundStyle(.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    Button {
+                                        withAnimation {
+                                            viewModel.toggleHabitComplete(habit: habit)
+                                        }
+                                    } label: {
+                                        
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(lineWidth: 2)
+                                            .foregroundStyle(habit.isCompleted ? .text : .tabBar)
+                                            .frame(width: 32, height: 32)
+                                            .padding(.horizontal)
+                                            .overlay {
+                                                if habit.isCompleted {
+                                                    Image(systemName: "checkmark")
+                                                        .bold()
+                                                        .foregroundStyle(.text)
+                                                }
+                                            }
+                                           
+                                    }
+                                    
+                                }
+                                .padding()
+                                .background(.cellBg)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                            }
+                        }
+                    }.padding(.top).padding(.bottom, 100)
+                }
+                .navigationDestination(for: Habit.self) { habit in
+                    SHEditHabitView(viewModel: viewModel, habit: habit)
+                        .navigationBarBackButtonHidden()
+                }
+                
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(25)
     }
 }
 
 #Preview {
-    SHHomeView()
+    SHHomeView(viewModel: HabitViewModel())
 }

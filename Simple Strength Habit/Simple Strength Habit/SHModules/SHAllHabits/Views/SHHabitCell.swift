@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct SHHabitCell: View {
+    @ObservedObject var viewModel: HabitViewModel
     @State var habit: Habit
     var onEditPressed: () -> ()
     var body: some View {
@@ -31,9 +32,12 @@ struct SHHabitCell: View {
         .background(.cellBg)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .overlay(alignment: .topLeading) {
-            Button {
-                onEditPressed()
+            NavigationLink {
+                SHEditHabitView(viewModel: viewModel, habit: habit)
+                    .navigationBarBackButtonHidden()
+                
             } label: {
+                
                 Image(systemName: "pencil")
                     .resizable()
                     .scaledToFit()
@@ -51,7 +55,7 @@ struct SHHabitCell: View {
 }
 
 #Preview {
-    SHHabitCell(habit:
+    SHHabitCell(viewModel: HabitViewModel(), habit:
                     Habit(name: .waterIntake, goal: 2.5, progress: 0, type: .quantitative, isCompleted: true), onEditPressed: {}
     )
 }
