@@ -1,3 +1,11 @@
+//
+//  HabitProgressBar.swift
+//  Simple Strength Habit
+//
+//
+
+import SwiftUI
+
 struct HabitProgressBar: View {
     let progress: Decimal
     let goal: Decimal
@@ -5,22 +13,20 @@ struct HabitProgressBar: View {
     private var ratio: Double {
         guard goal > 0 else { return 0 }
         let value = progress.doubleValue / goal.doubleValue
-        return max(0, min(value, 1))   // clamp 0...1
+        return max(0, min(value, 1))   
     }
 
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
-                // фон
-                Capsule()
-                    .fill(Color.gray.opacity(0.2))
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(Color.tabBar.opacity(0.2))
 
-                // заполненная часть
-                Capsule()
-                    .fill(Color.blue)
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(Color.tabBar)
                     .frame(width: geo.size.width * ratio)
             }
         }
-        .frame(height: 8)  // высота прогресс-бара
+        .frame(height: 20)  // высота прогресс-бара
     }
 }

@@ -1,3 +1,11 @@
+//
+//  AverageHabitProgressDonut.swift
+//  Simple Strength Habit
+//
+//
+
+import SwiftUI
+
 struct AverageHabitProgressDonut: View {
     let habits: [Habit]
 
@@ -9,23 +17,17 @@ struct AverageHabitProgressDonut: View {
             // Серый фон-кольцо
             Circle()
                 .stroke(
-                    Color.gray.opacity(0.2),
-                    lineWidth: 20
+                    Color.cellBg,
+                    lineWidth: 25
                 )
 
             // Заполненная часть
             Circle()
                 .trim(from: 0, to: value) // 0...1
                 .stroke(
-                    AngularGradient(
-                        gradient: Gradient(colors: [
-                            Color.blue,
-                            Color.purple
-                        ]),
-                        center: .center
-                    ),
+                    .tabBar,
                     style: StrokeStyle(
-                        lineWidth: 20,
+                        lineWidth: 25,
                         lineCap: .round
                     )
                 )
@@ -33,14 +35,31 @@ struct AverageHabitProgressDonut: View {
                 .animation(.easeOut(duration: 0.4), value: value)
 
             // Текст в центре
-            VStack(spacing: 4) {
+            VStack(spacing: 10) {
+                Text("Today")
+                    .font(.system(size: 25, weight: .black))
+                    .foregroundColor(.text)
+                    .textCase(.uppercase)
+                
                 Text("\(percent)%")
-                    .font(.system(size: 28, weight: .bold))
-                Text("Average")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 45, weight: .semibold))
+                    .foregroundColor(.percentText)
+                
             }
         }
-        .frame(width: 140, height: 140) // размер диаграммы
+        .frame(width: 200, height: 200) // размер диаграммы
+    }
+    
+    func averageCompletion(for habits: [Habit]) -> Double {
+        let validHabits = habits.filter { $0.goal > 0 }
+        guard !validHabits.isEmpty else { return 0 }
+        
+        let total = validHabits.reduce(0.0) { partial, habit in
+            let ratio = habit.progress.doubleValue / habit.goal.doubleValue
+            let clamped = max(0, min(ratio, 1)) // 0...1
+            return partial + clamped
+        }
+        
+        return total / Double(validHabits.count) // 0...1
     }
 }
