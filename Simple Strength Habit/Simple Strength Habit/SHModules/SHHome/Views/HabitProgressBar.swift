@@ -27,6 +27,6 @@ struct HabitProgressBar: View {
                     .frame(width: geo.size.width * ratio)
             }
         }
-        .frame(height: 20)  // высота прогресс-бара
+        .frame(height: 20) 
     }
 }

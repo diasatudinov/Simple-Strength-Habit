@@ -87,7 +87,7 @@ import SwiftUI
 
 struct HabitMonthPoint: Identifiable {
     let id = UUID()
-    let day: Int        // число месяца
+    let day: Int       
     let progress: Double
 }
 
@@ -99,13 +99,10 @@ func monthPoints(from habits: [Habit]) -> [HabitMonthPoint] {
         return []
     }
 
-    // Фильтруем только привычки этого месяца
     let monthHabits = habits.filter { habit in
         monthInterval.contains(habit.date)
     }
 
-    // Если очень боишься дублей — можно убрать повторяющиеся по id:
-    // let unique = Dictionary(grouping: monthHabits, by: \.id).compactMap { $0.value.first }
 
     return monthHabits.map { habit in
         let day = calendar.component(.day, from: habit.date)
@@ -119,18 +116,15 @@ func monthPoints(from habits: [Habit]) -> [HabitMonthPoint] {
 
 struct MonthHabitBarChart: View {
     let habitName: HabitName
-    let habits: [Habit]   // все записи этой привычки за месяц
+    let habits: [Habit]
     
     private var calendar: Calendar { Calendar.current }
     
-    // точки для графика: по одному столбцу на день
     private var points: [HabitMonthPoint] {
-        // сгруппировали по дню месяца
         let grouped = Dictionary(grouping: habits) { habit in
             calendar.component(.day, from: habit.date)
         }
         
-        // для каждого дня берём самую позднюю запись
         return grouped.compactMap { (day, habitsInDay) in
             guard let latest = habitsInDay.max(by: { $0.date < $1.date }) else {
                 return nil
@@ -138,20 +132,18 @@ struct MonthHabitBarChart: View {
             
             return HabitMonthPoint(
                 day: day,
-                progress: latest.progress.doubleValue   // или ratio, если нужно
+                progress: latest.progress.doubleValue
             )
         }
-        .sorted { $0.day < $1.day } // на всякий случай сортируем по дню
+        .sorted { $0.day < $1.day }
     }
     
-    /// Диапазон дней текущего месяца (1...последний день)
     private var daysRange: ClosedRange<Int> {
         let date = habits.first?.date ?? Date()
         let range = calendar.range(of: .day, in: .month, for: date) ?? Range(1...30)
         return range.lowerBound...range.upperBound
     }
     
-    /// Значения оси X: 1, 15 и последний день месяца
     private var xAxisTickValues: [Int] {
         let first = daysRange.lowerBound
         let last = daysRange.upperBound
@@ -172,11 +164,11 @@ struct MonthHabitBarChart: View {
                 BarMark(
                     x: .value("Day", point.day),
                     y: .value("Progress", point.progress),
-                    width: .fixed(13)      // ширина столбца
+                    width: .fixed(13)
                 ).clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 10))
                     .foregroundStyle(.text)
             }
-            .chartXScale(domain: daysRange)    // все дни месяца в domain
+            .chartXScale(domain: daysRange)
             .chartXAxis {
                 AxisMarks(values: xAxisTickValues) { value in
                     AxisGridLine()
@@ -189,7 +181,7 @@ struct MonthHabitBarChart: View {
                     }
                 }
             }
-            .frame(height: 100)                // максимальная высота графика
+            .frame(height: 100)
         }
     }
 }
@@ -206,15 +198,12 @@ struct MonthAllHabitsChartsView: View {
             return []
         }
 
-        // 1. только привычки этого месяца
         let monthHabits = habits.filter { habit in
             monthInterval.contains(habit.date)
         }
 
-        // 2. сгруппировать по виду привычки (name)
         let grouped = Dictionary(grouping: monthHabits, by: \.name)
 
-        // 3. превратить в массив и отсортировать по названию
         return grouped
             .map { (habitName: $0.key, habits: $0.value) }
             .sorted { $0.habitName.text < $1.habitName.text }
@@ -231,7 +220,7 @@ struct MonthAllHabitsChartsView: View {
                     
                     ForEach(groupsForCurrentMonth, id: \.habitName) { group in
                         VStack(alignment: .leading, spacing: 8) {
-                            Text(group.habitName.text)   // заголовок графика
+                            Text(group.habitName.text)   
                                 .font(.system(size: 20, weight: .semibold))
                                 .foregroundColor(.text)
                             

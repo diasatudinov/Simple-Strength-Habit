@@ -33,13 +33,13 @@ struct PeriodTabView: View {
                             Group {
                                 if selection == period {
                                     RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.tabBar) // твой цвет активного таба
+                                        .fill(Color.tabBar)
                                 } else {
                                     Color.clear
                                 }
                             }
                         )
-                        .foregroundColor(selection == period ? .white : .text) // свои цвета
+                        .foregroundColor(selection == period ? .white : .text)
                 }
                 .buttonStyle(.plain)
             }
@@ -47,7 +47,7 @@ struct PeriodTabView: View {
         .padding(4)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.cellBg) // фон всего сегмента
+                .fill(Color.cellBg) 
         )
     }
 }

@@ -171,13 +171,15 @@ struct SHEditHabitView: View {
                     }
                 }.padding(.bottom, 20)
             }
-        }.padding(.horizontal, 27)
-            .onAppear {
-                name = habit.name
-                unitOfMeasurement = habit.name.unitOfMeasurement
-                goal = decimalToString(habit.goal)
-                type = habit.type
-            }
+        }
+        .padding(.horizontal, 27)
+        .onAppear {
+            name = habit.name
+            unitOfMeasurement = habit.name.unitOfMeasurement
+            goal = decimalToString(habit.goal)
+            type = habit.type
+        }
+        .hideKeyboardOnTap()
     }
     
     private func header() -> some View {

@@ -17,7 +17,6 @@ extension UIApplication {
 }
 
 extension View {
-    /// Скрывает клавиатуру при тапе по вью
     func hideKeyboardOnTap() -> some View {
         self.onTapGesture {
             UIApplication.shared.hideKeyboard()

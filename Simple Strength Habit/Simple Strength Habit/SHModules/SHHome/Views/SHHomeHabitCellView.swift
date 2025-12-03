@@ -41,7 +41,6 @@ struct SHHomeHabitCellView: View {
                     }
                     Button {
                         if editProgress {
-                            // Сохраняем значение из TextField
                             if let newValue = Decimal(string: progressText, locale: Locale.current) {
                                 
                                 viewModel.editProgress(habit: habit, progress: min(newValue, habit.goal))
@@ -49,7 +48,6 @@ struct SHHomeHabitCellView: View {
                                 
                             }
                         } else {
-                            // Входим в режим редактирования — подставляем текущее значение
                             progressText = habit.progress.asString
                         }
                         
@@ -80,8 +78,9 @@ struct SHHomeHabitCellView: View {
             
         }
         .padding()
-            .background(.cellBg)
-            .clipShape(RoundedRectangle(cornerRadius: 15))
+        .background(.cellBg)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .hideKeyboardOnTap()
     }
     
     func decimalToString(_ value: Decimal,

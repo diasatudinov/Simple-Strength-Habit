@@ -149,6 +149,7 @@ struct SHCreateHabitView: View {
                 }.padding(.bottom, 50)
             }
         }.padding(.horizontal, 27)
+            .hideKeyboardOnTap()
     }
     
     private func header() -> some View {
