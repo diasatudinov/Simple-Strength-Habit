@@ -1,3 +1,12 @@
+//
+//  HabitPeriod.swift
+//  Simple Strength Habit
+//
+//
+
+
+import SwiftUI
+
 enum HabitPeriod: String, CaseIterable, Identifiable {
     case day = "Day"
     case month = "Month"

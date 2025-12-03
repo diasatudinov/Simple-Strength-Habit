@@ -13,6 +13,7 @@ struct Habit: Codable, Hashable, Identifiable {
     var progress: Decimal
     var type: HabitType
     var isCompleted: Bool = false
+    var date: Date = .now
 }
 
 enum HabitName: Codable, Hashable, CaseIterable {

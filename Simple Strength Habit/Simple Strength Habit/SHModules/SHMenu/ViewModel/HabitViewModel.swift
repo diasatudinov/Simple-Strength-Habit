@@ -8,7 +8,6 @@ import SwiftUI
 
 class HabitViewModel: ObservableObject {
     @Published var habits: [Habit] = [
-        
     ]
     {
         didSet {

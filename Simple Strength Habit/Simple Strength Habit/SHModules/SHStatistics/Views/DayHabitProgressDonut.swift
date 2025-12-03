@@ -2,17 +2,16 @@
 //  AverageHabitProgressDonut.swift
 //  Simple Strength Habit
 //
-//  Created by Dias Atudinov on 03.12.2025.
 //
 
 
 import SwiftUI
 
-struct AverageHabitProgressDonut: View {
-    let habits: [Habit]
+struct DayHabitProgressDonut: View {
+    let habit: Habit
 
     var body: some View {
-        let value = averageCompletion(for: habits)
+        let value = progressData(for: habit)
         let percent = Int((value * 100).rounded())
 
         ZStack {
@@ -20,7 +19,7 @@ struct AverageHabitProgressDonut: View {
             Circle()
                 .stroke(
                     Color.cellBg,
-                    lineWidth: 25
+                    lineWidth: 15
                 )
 
             // Заполненная часть
@@ -29,7 +28,7 @@ struct AverageHabitProgressDonut: View {
                 .stroke(
                     .tabBar,
                     style: StrokeStyle(
-                        lineWidth: 25,
+                        lineWidth: 15,
                         lineCap: .round
                     )
                 )
@@ -38,30 +37,15 @@ struct AverageHabitProgressDonut: View {
 
             // Текст в центре
             VStack(spacing: 10) {
-                Text("Today")
-                    .font(.system(size: 25, weight: .black))
-                    .foregroundColor(.text)
-                    .textCase(.uppercase)
-                
                 Text("\(percent)%")
-                    .font(.system(size: 45, weight: .semibold))
-                    .foregroundColor(.percentText)
+                    .font(.system(size: 30, weight: .semibold))
+                    .foregroundColor(.tabBar)
                 
             }
         }
-        .frame(width: 200, height: 200)
     }
     
-    func averageCompletion(for habits: [Habit]) -> Double {
-        let validHabits = habits.filter { $0.goal > 0 }
-        guard !validHabits.isEmpty else { return 0 }
-        
-        let total = validHabits.reduce(0.0) { partial, habit in
-            let ratio = habit.progress.doubleValue / habit.goal.doubleValue
-            let clamped = max(0, min(ratio, 1))
-            return partial + clamped
-        }
-        
-        return total / Double(validHabits.count)
+    func progressData(for habit: Habit) -> Double {
+        return habit.progress.doubleValue / habit.goal.doubleValue
     }
 }
