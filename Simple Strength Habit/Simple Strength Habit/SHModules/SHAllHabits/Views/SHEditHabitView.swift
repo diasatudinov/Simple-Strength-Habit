@@ -128,30 +128,48 @@ struct SHEditHabitView: View {
                     
                 }
                 .padding(.top, 30)
-                .padding(.bottom, 120)
+                .padding(.bottom, 350)
                     
             }
             .overlay(alignment: .bottom) {
-                Button {
-                    if goal != "" {
-                        viewModel.edit(
-                            habit: habit,
-                            habitName: name,
-                            habitGoal: Decimal(string: goal) ?? 0.0,
-                            habitType: type
-                        )
-                        dismiss()
+                
+                VStack {
+                    Button {
+                        if goal != "" {
+                            viewModel.edit(
+                                habit: habit,
+                                habitName: name,
+                                habitGoal: Decimal(string: goal) ?? 0.0,
+                                habitType: type
+                            )
+                            dismiss()
+                        }
+                    } label: {
+                        Text("Save")
+                            .font(.system(size: 25, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.vertical, 15)
+                            .background(.text.opacity(goal == "" ? 0.5 : 1))
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                        
                     }
-                } label: {
-                    Text("Save")
-                        .font(.system(size: 25, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.vertical, 15)
-                        .background(.text.opacity(goal == "" ? 0.5 : 1))
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
                     
-                }.padding(.bottom, 50)
+                    Button {
+                        viewModel.delete(habit: habit)
+                            dismiss()
+                        
+                    } label: {
+                        Text("Delete")
+                            .font(.system(size: 25, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.vertical, 15)
+                            .background(.red)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                        
+                    }
+                }.padding(.bottom, 20)
             }
         }.padding(.horizontal, 27)
             .onAppear {

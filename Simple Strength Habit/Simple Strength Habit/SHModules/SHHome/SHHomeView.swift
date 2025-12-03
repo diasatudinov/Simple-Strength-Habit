@@ -9,19 +9,24 @@ import SwiftUI
 struct SHHomeView: View {
     @ObservedObject var viewModel: HabitViewModel
     @State private var editProgress = false
+    
     var body: some View {
             VStack(alignment: .leading, spacing: 17) {
+                let todayHabits = viewModel.habits.filter { habit in
+                    Calendar.current.isDateInToday(habit.date)
+                }
+                
                 Text("Menu")
                     .font(.system(size: 25, weight: .black))
                     .foregroundStyle(.text)
                     .textCase(.uppercase)
                 
-                AverageHabitProgressDonut(habits: viewModel.habits)
+                AverageHabitProgressDonut(habits: todayHabits)
                     .frame(maxWidth: .infinity)
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 21) {
-                        ForEach(viewModel.habits, id: \.self) { habit in
+                        ForEach(todayHabits, id: \.self) { habit in
                             if habit.type == .quantitative {
                                 SHHomeHabitCellView(viewModel: viewModel, habit: habit)
                             } else {

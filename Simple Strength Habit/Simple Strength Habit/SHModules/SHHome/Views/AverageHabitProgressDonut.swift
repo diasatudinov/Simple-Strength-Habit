@@ -47,7 +47,7 @@ struct AverageHabitProgressDonut: View {
                 
             }
         }
-        .frame(width: 200, height: 200) // размер диаграммы
+        .frame(width: 200, height: 200)
     }
     
     func averageCompletion(for habits: [Habit]) -> Double {
@@ -56,10 +56,10 @@ struct AverageHabitProgressDonut: View {
         
         let total = validHabits.reduce(0.0) { partial, habit in
             let ratio = habit.progress.doubleValue / habit.goal.doubleValue
-            let clamped = max(0, min(ratio, 1)) // 0...1
+            let clamped = max(0, min(ratio, 1))
             return partial + clamped
         }
         
-        return total / Double(validHabits.count) // 0...1
+        return total / Double(validHabits.count)
     }
 }

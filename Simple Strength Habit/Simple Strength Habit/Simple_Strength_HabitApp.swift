@@ -10,7 +10,7 @@ import SwiftUI
 struct Simple_Strength_HabitApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SHMenuContainerView()
         }
     }
 }
